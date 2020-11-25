@@ -63,13 +63,14 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm install nginx-ingress ingress-nginx/ingress-nginx \
     --namespace ingress-basic \
     --set controller.replicaCount=2 \
-    --set controller.image.registry=usgcr.azk8s.cn \
+    --set controller.image.repository=k8sgcr.azk8s.cn/ingress-nginx/controller \
     --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
     --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
-    --set defaultBackend.image.repository=gcr.azk8s.cn/google_containers/defaultbackend-amd64
+    --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux \
+    --set defaultBackend.image.repository=k8sgcr.azk8s.cn/defaultbackend-amd64
 ```
 
-<!--MOONCAKE: Add --set defaultBackend.image.repository=gcr.azk8s.cn/google_containers/defaultbackend-amd64-->
+<!--MOONCAKE: Add --set controller.image.repository=k8sgcr.azk8s.cn/ingress-nginx/controller --set defaultBackend.image.repository=k8sgcr.azk8s.cn/defaultbackend-amd64-->
 
 为 NGINX 入口控制器创建 Kubernetes 负载均衡器服务时，会分配动态公共 IP 地址，如以下示例输出中所示：
 
